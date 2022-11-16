@@ -1,0 +1,5 @@
+package com.ieng.task.dests.enumerations;
+
+public enum ErrorCode {
+	INVALID_REQUEST, INVALID_ID, INVALID_PASSWORD, USER_NOT_FOUND, USER_UNAUTHORIZED, USER_ALREADY_EXISTS, NOT_FOUND
+}
