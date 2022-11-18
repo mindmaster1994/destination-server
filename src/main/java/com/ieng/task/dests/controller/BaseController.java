@@ -8,11 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.ieng.task.dests.advice.LocaleService;
+import com.ieng.task.dests.model.User;
+import com.ieng.task.dests.security.service.UserDetailsImpl;
+
 
 
 abstract class BaseController {
@@ -58,5 +63,10 @@ abstract class BaseController {
 	@ModelAttribute("logguid")
 	public String getLogGuid() {
 		return (String) request.getAttribute("logguid");
+	}
+	
+	protected User getCurrentUser() {
+		UserDetailsImpl principal = (UserDetailsImpl)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return principal.getUser();
 	}
 }

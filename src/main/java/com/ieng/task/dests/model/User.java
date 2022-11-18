@@ -25,6 +25,14 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User{
 
+	public User() {}
+	public User(Long id, String email, String password, String username) {
+		this.id = id;
+		this.email = email;
+		this.password = password;
+		this.username = username;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;

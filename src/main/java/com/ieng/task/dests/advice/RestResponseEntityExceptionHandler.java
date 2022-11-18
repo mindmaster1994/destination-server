@@ -19,10 +19,12 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.ieng.task.dests.exception.BusinessException;
 import com.ieng.task.dests.exception.GeneralException;
+
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -38,6 +40,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 	@Autowired
 	public RestResponseEntityExceptionHandler(LocaleService localeService) {
+		this.localeService = localeService;
 	}
 
 	@ExceptionHandler({ AccessDeniedException.class })
@@ -67,6 +70,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		ResponseEnvelope envelop = ResponseEnvelope.builder().success(false).time(LocalDateTime.now())
 				.error(new ErrorBody(HttpStatus.UNAUTHORIZED, error)).build();
 		return new ResponseEntity<Object>(envelop, HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler({ MaxUploadSizeExceededException.class })
+	public ResponseEntity<Object> handleMaxUploadSizeExceededException(Exception ex, HttpServletRequest request) {
+		ResponseEnvelope envelop = ResponseEnvelope.builder().success(false).time(LocalDateTime.now())
+				.error(new ErrorBody(HttpStatus.REQUEST_ENTITY_TOO_LARGE, ex.getLocalizedMessage())).build();
+		return new ResponseEntity<Object>(envelop, HttpStatus.REQUEST_ENTITY_TOO_LARGE);
 	}
 
 	@ExceptionHandler({ GeneralException.class })
@@ -125,5 +135,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
 		return new ResponseEntity<Object>(envelop, HttpStatus.OK);
 	}
+
 
 }

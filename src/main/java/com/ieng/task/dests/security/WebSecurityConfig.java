@@ -24,9 +24,10 @@ import com.ieng.task.dests.security.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableGlobalMethodSecurity(
+		// securedEnabled = true,
+		// jsr250Enabled = true,
 		prePostEnabled = true)
-public class WebSecurityConfig {
-	
+public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 
@@ -58,11 +59,12 @@ public class WebSecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
 
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/api/users/signin", "/api/users/signup","/api/destinations/create","/api/destinations/update","/api/destinations/delete","/api/destinations/listing")
+				.antMatchers("/api/users/signin", "/api/users/signup","/api/destinations/create","/api/destinations/update","/api/destinations/delete","/api/destinations/listing","/upload/**")
 				.permitAll().anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());

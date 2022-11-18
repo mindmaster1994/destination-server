@@ -2,6 +2,7 @@ package com.ieng.task.dests.controller;
 
 import java.net.URISyntaxException;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
@@ -27,6 +28,7 @@ import com.ieng.task.dests.advice.ResponseEnvelope;
 import com.ieng.task.dests.dtos.auth.LoginRequestDTO;
 import com.ieng.task.dests.dtos.auth.UserDTO;
 import com.ieng.task.dests.exception.BusinessException;
+import com.ieng.task.dests.model.Destination;
 import com.ieng.task.dests.model.User;
 import com.ieng.task.dests.response.JwtResponse;
 import com.ieng.task.dests.response.Message;
@@ -74,5 +76,15 @@ public class UserController extends BaseController {
 		return new ResponseEntity<ResponseEnvelope>(
 				ResponseEnvelope.builder().success(true).result(Message.value("message.user.create.success")).build(),
 				HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/favouriteDestinations")
+	public ResponseEntity<?> getFavouriteDestinations() {
+
+		Set<Destination> destinations = userService.getFavouriteDestinations(getCurrentUser());
+
+		return new ResponseEntity<ResponseEnvelope>(
+				ResponseEnvelope.builder().success(true).result(Message.value("message.get.fav.destinations.success")).data(destinations).build(),
+				HttpStatus.OK);
 	}
 }
