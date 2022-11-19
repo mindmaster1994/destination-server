@@ -14,9 +14,7 @@ public class HandshakeHandler extends DefaultHandshakeHandler{
     protected Principal determineUser(ServerHttpRequest request,
                                       WebSocketHandler wsHandler,
                                       Map<String, Object> attributes) {
-        // generate user name by UUID
 		
-		System.out.println("CONNECTED BY :  kajsdhkja hkdjahskjdh as");
         return new UserPrincipal(UUID.randomUUID().toString());
 	}
 }
