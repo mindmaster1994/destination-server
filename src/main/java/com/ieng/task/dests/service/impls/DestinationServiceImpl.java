@@ -28,6 +28,7 @@ import com.ieng.task.dests.response.Message;
 import com.ieng.task.dests.service.DestinationService;
 import com.ieng.task.dests.service.FileService;
 import com.ieng.task.dests.service.UserService;
+import com.ieng.task.dests.websocket.NotificationService;
 
 @Service
 public class DestinationServiceImpl implements DestinationService {
@@ -40,6 +41,9 @@ public class DestinationServiceImpl implements DestinationService {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	NotificationService notificationService;
 	
 	@Override
 	public Destination getDestinationById(Long id) {
@@ -120,15 +124,16 @@ public class DestinationServiceImpl implements DestinationService {
 		}
 		
 		destinations.add(destination);		
+		
 		user.setFavouriteDestinations(destinations);
+		
+		this.notificationService.sendNotifications(user.getUsername(), destination);
 		
 		userService.updateUser(user);
 	}
 	
 	@Override
 	public void UnmarkFavouriteDestination(Long id, User user) {
-		
-		
 		
 		Destination destination = getDestinationById(id);
 		

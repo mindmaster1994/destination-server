@@ -64,7 +64,7 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/api/users/signin", "/api/users/signup","/api/destinations/create","/api/destinations/update","/api/destinations/delete","/api/destinations/listing","/upload/**")
+				.antMatchers("/api/users/signin", "/api/users/signup","/api/destinations/create","/api/destinations/update","/api/destinations/delete","/api/destinations/listing","/upload/**","/ws/**")
 				.permitAll().anyRequest().authenticated();
 
 		http.authenticationProvider(authenticationProvider());
